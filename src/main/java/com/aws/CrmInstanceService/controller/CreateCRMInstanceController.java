@@ -16,8 +16,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-
+import com.aws.CrmInstanceService.bean.Lookup;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
@@ -41,41 +40,26 @@ public class CreateCRMInstanceController {
     @CrossOrigin
     @RequestMapping(value="/invokeTheCFStack",method = RequestMethod.POST, produces = { "application/json" })
     public ResponseEntity<Object> invoke(@RequestBody String json){
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         Gson gson = new Gson();
         Map userInputMap = gson.fromJson(json, Map.class);
 
         String emailId = (String) userInputMap.get("email");
         logger.info("Invoke Rest Controller with user Info : emailId : " + emailId);
         String body = null;
-        String dummyEmailResponse = "<p>Dear ,</p>\n" +
-                "<p>We are pleased to inform you that CRM is now available for your use.</p>\n" +
-                "\n" +
-                "<p>Please find the access link, user name and password to access your account.</p>\n" +
-                "\n" +
-                "<p>Link: <a href =\"http://ec2-54-235-3-213.compute-1.amazonaws.com\"> http://ec2-54-235-3-213.compute-1.amazonaws.com </a></p>\n" +
-                "\n" +
-                "<p>User Name: user </p>" +
-                "<p>Password: bitnami </p>\n" +
-                "\n" +
-                "<p> Please feel free to reach out to us for any clarification or support you need. </p>\n" +
-                "\n" +
-                "<p>Warm Regards,</p>\n" +
-                "<p>Customer Support</p>";
+
         try {
 
             //Call the cloud-formation stack
-            //Map<String,String> cfoutput = cloudFormationStack.createStack(userInputMap);
+            Map<String,String> cfoutput = cloudFormationStack.createStack(userInputMap);
 
             //Generate email body using cloud-formation output
-            //body = generateEmailBody(userInputMap,cfoutput);
-            body = dummyEmailResponse;
-
-
+            body = generateEmailBody(userInputMap,cfoutput);
+            //body = Lookup.DUMMY_EMAIL_RESPONSE;
 
         } catch (Exception e) {
             e.printStackTrace();

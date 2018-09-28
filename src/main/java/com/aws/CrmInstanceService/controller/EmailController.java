@@ -2,7 +2,6 @@ package com.aws.CrmInstanceService.controller;
 
 import com.aws.CrmInstanceService.SendMailSSL;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +32,8 @@ public class EmailController {
         logger.info("emailId:" + emailId);
 
         boolean mailStatus =  sendEmail.sendEmail(emailId,emailBody);
+        //boolean mailStatus =  true;
+
         if(mailStatus){
             return new ResponseEntity(HttpStatus.OK);
         }
