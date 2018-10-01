@@ -38,6 +38,12 @@ public class CreateCRMInstanceController {
     private ConfigProperties configProperties;
 
     @CrossOrigin
+    @RequestMapping(value="/ping",method = RequestMethod.GET)
+    public String getPing(){
+        return "Health Check works..";
+    }
+
+    @CrossOrigin
     @RequestMapping(value="/invokeTheCFStack",method = RequestMethod.POST, produces = { "application/json" })
     public ResponseEntity<Object> invoke(@RequestBody String json){
 //        try {
