@@ -26,8 +26,6 @@ public class PropertiesFileProvider {
         prop.setProperty("spring.datasource.url",url);
         prop.setProperty("spring.datasource.username","root");
         prop.setProperty("spring.datasource.password","");
-        prop.setProperty("spring.jpa.show-sql","true");
-        prop.setProperty("spring.jpa.hibernate.ddl-auto","create");
         prop.setProperty("server.port","3001");
         String path = "/home/bitnami/application-uj1.properties";
         saveProperties(prop,path);
