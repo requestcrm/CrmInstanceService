@@ -4,6 +4,7 @@ import com.aws.CrmInstanceService.SendMailSSL;
 import com.aws.CrmInstanceService.bean.CloudFormationStack;
 import com.aws.CrmInstanceService.bean.ConfigProperties;
 
+import com.aws.CrmInstanceService.bean.PropertiesFileProvider;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +63,10 @@ public class CreateCRMInstanceController {
 
             //Call the cloud-formation stack
            Map<String,String> cfoutput = cloudFormationStack.createStack(userInputMap);
+
+           //create UJ-1 properties file
+           PropertiesFileProvider propertiesFileProvider = new PropertiesFileProvider();
+           propertiesFileProvider.createPropUJ1(cfoutput.get("PublicIP"));
 
             //Generate email body using cloud-formation output
             body = generateEmailBody(userInputMap,cfoutput);
