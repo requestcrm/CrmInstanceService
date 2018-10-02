@@ -61,7 +61,7 @@ public class CreateCRMInstanceController {
         try {
 
             //Call the cloud-formation stack
-            Map<String,String> cfoutput = cloudFormationStack.createStack(userInputMap);
+           Map<String,String> cfoutput = cloudFormationStack.createStack(userInputMap);
 
             //Generate email body using cloud-formation output
             body = generateEmailBody(userInputMap,cfoutput);
@@ -82,7 +82,7 @@ public class CreateCRMInstanceController {
         Configuration cfg = new Configuration();
         String body = null;
         try {
-            Template template = cfg.getTemplate("src\\email_template.tfl\\");
+            Template template = cfg.getTemplate("src/main/resources/email_template.tfl");
             Map<String, Object> data = new HashMap<String, Object>();
             data.put("fname", fname);
             data.put("PublicDNS", PublicDNS);
