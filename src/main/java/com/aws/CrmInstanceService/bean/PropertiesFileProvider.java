@@ -18,8 +18,8 @@ public class PropertiesFileProvider {
         logger.info("After saving properties: " + p);
     }
 
-    //Creating properties for UJ-1 DB source properties
-    public void createPropUJ1(String ip) throws IOException {
+    //Creating properties for UJ-1 to UJ-2 DB source properties
+    public void createPropUJ1(String ip,String company) throws IOException {
         logger.info("Creating properties file for :" + ip);
         String url = "jdbc:mysql://"+ip+":3306/bitnami_suitecrm";
         Properties prop = new Properties();
@@ -27,22 +27,9 @@ public class PropertiesFileProvider {
         prop.setProperty("spring.datasource.username","root");
         prop.setProperty("spring.datasource.password","");
         prop.setProperty("server.port","3001");
+        prop.setProperty("spring.jpa.hibernate.ddl-auto","update");
+        prop.setProperty("company",company);
         String path = "/home/bitnami/application-uj1.properties";
         saveProperties(prop,path);
-
-
-    }
-
-    protected void createPropUJ2(){
-
-    }
-
-    protected void createPropUJ3(){
-
-    }
-
-    public static void main(String args[]) throws IOException {
-        PropertiesFileProvider p = new PropertiesFileProvider();
-        p.createPropUJ1("10.1.1.1");
     }
 }
