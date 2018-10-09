@@ -4,6 +4,7 @@ import com.aws.CrmInstanceService.SendMailSSL;
 import com.aws.CrmInstanceService.bean.CloudFormationStack;
 import com.aws.CrmInstanceService.bean.ConfigProperties;
 
+import com.aws.CrmInstanceService.bean.PropertiesFileProvider;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,26 +47,26 @@ public class CreateCRMInstanceController {
     @CrossOrigin
     @RequestMapping(value="/invokeTheCFStack",method = RequestMethod.POST, produces = { "application/json" })
     public ResponseEntity<Object> invoke(@RequestBody String json){
-//        try {
-//            Thread.sleep(5000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
         Gson gson = new Gson();
         Map userInputMap = gson.fromJson(json, Map.class);
 
         String emailId = (String) userInputMap.get("email");
+        String company = (String)userInputMap.get("company");
         logger.info("Invoke Rest Controller with user Info : emailId : " + emailId);
         String body = null;
 
         try {
 
-            //Call the cloud-formation stack
+           //Call the cloud-formation stack
            Map<String,String> cfoutput = cloudFormationStack.createStack(userInputMap);
 
-            //Generate email body using cloud-formation output
-            body = generateEmailBody(userInputMap,cfoutput);
-            //body = Lookup.DUMMY_EMAIL_RESPONSE;
+           //create UJ-1 properties file
+           PropertiesFileProvider propertiesFileProvider = new PropertiesFileProvider();
+           propertiesFileProvider.createPropUJ1(cfoutput.get("PublicIP"),company);
+
+           //Generate email body using cloud-formation output
+           body = generateEmailBody(userInputMap,cfoutput);
+           //body = Lookup.DUMMY_EMAIL_RESPONSE;
 
         } catch (Exception e) {
             e.printStackTrace();

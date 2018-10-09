@@ -43,5 +43,31 @@ public class EmailController {
         }
 
     }
+    
+    //Yell Email
+    @CrossOrigin
+    @RequestMapping(value="/campaign/sendEmailFor",method = RequestMethod.POST)
+    public ResponseEntity sendEmailForCampaign(@RequestBody String json){
+
+        Gson gson = new Gson();
+        Map emailDataInput = gson.fromJson(json, Map.class);
+        String emailBody = (String) emailDataInput.get("emailBody");
+        String emailId = (String) emailDataInput.get("email");
+        String subject = (String) emailDataInput.get("subject");
+        logger.info("emailBody:" + emailBody);
+        logger.info("emailId:" + emailId);
+
+        boolean mailStatus =  sendEmail.sendEmail(emailId,emailBody,subject);
+        //boolean mailStatus =  true;
+
+        if(mailStatus){
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
+
+    }
 
 }
